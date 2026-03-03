@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenClaw 安装指南 — 给产品经理的 AI 工作流搭建教程</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #3fb950;
+      --orange: #d29922;
+      --red: #f85149;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      padding: 0 16px;
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 40px 0 80px; }
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle { color: var(--muted); font-size: 1.1em; margin-bottom: 48px; }
+    h2 {
+      font-size: 1.5em;
+      margin: 48px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2 .step-num {
+      background: var(--accent);
+      color: var(--bg);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8em;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    h3 { font-size: 1.15em; margin: 24px 0 8px; color: var(--accent); }
+    p, li { margin-bottom: 12px; }
+    ul { padding-left: 24px; }
+    code {
+      background: #1c2128;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 0.9em;
+      color: var(--green);
+    }
+    pre {
+      background: #1c2128;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 12px 0 20px;
+      position: relative;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.88em;
+      line-height: 1.6;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 16px 0;
+    }
+    .tip {
+      border-left: 3px solid var(--green);
+      padding-left: 16px;
+      margin: 16px 0;
+      color: var(--muted);
+    }
+    .tip strong { color: var(--green); }
+    .warn {
+      border-left: 3px solid var(--orange);
+      padding-left: 16px;
+      margin: 16px 0;
+      color: var(--muted);
+    }
+    .warn strong { color: var(--orange); }
+    .model-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    .model-table th, .model-table td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .model-table th {
+      background: #1c2128;
+      color: var(--accent);
+    }
+    .model-table tr:hover { background: #1c2128; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75em;
+      font-weight: 600;
+    }
+    .badge-rec { background: #1a4d2e; color: var(--green); }
+    .badge-alt { background: #3d2e00; color: var(--orange); }
+    .toc { margin: 24px 0 40px; }
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      display: block;
+      padding: 4px 0;
+    }
+    .toc a:hover { text-decoration: underline; }
+    a { color: var(--accent); }
+    .hero-emoji { font-size: 3em; margin-bottom: 16px; }
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+      font-size: 0.95em;
+    }
+    .flow-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .flow-arrow { color: var(--muted); font-size: 1.2em; }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 0 20px;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+      font-size: 0.9em;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.6em; }
+      pre { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero-emoji">🤖</div>
+  <h1>OpenClaw 安装指南</h1>
+  <p class="subtitle">给产品经理的 AI 工作流搭建教程 · 零基础友好 · 全中文</p>
+
+  <div class="card">
+    <strong>🎯 这份指南是写给谁的？</strong>
+    <p style="margin-top:8px;">你是产品经理，想用 AI 工具提高效率，但没有开发背景。这份指南会手把手带你从零搭建一个强大的 AI 工作流：先装好基础工具，再配置 OpenClaw，最后接入最适合中文的 AI 模型。</p>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-box">安装基础工具</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">安装 Claude Code</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">安装 OpenClaw</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">配置中文模型</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">🎉 开始使用</div>
+  </div>
+
+  <nav class="toc">
+    <strong>📑 目录</strong>
+    <a href="#step0">0. 前置知识 — 什么是终端？</a>
+    <a href="#step1">1. 安装 Node.js（运行环境）</a>
+    <a href="#step2">2. 安装 Claude Code（AI 编程助手）</a>
+    <a href="#step3">3. 安装 OpenClaw（AI 工作流平台）</a>
+    <a href="#step4">4. 选择 & 配置中文模型</a>
+    <a href="#step5">5. 连接消息平台（微信/Telegram）</a>
+    <a href="#step6">6. 日常使用指南</a>
+    <a href="#faq">常见问题</a>
+  </nav>
+
+  <!-- STEP 0 -->
+  <h2 id="step0"><span class="step-num">0</span>前置知识 — 什么是终端？</h2>
+  
+  <p>终端（Terminal）是一个用文字和电脑对话的窗口。别被它吓到，你只需要<strong>复制粘贴命令</strong>就行。</p>
+
+  <h3>打开终端</h3>
+  <ul>
+    <li><strong>Mac：</strong>按 <code>⌘ + 空格</code>，搜索"终端"或"Terminal"，回车打开</li>
+    <li><strong>Windows：</strong>按 <code>Win + R</code>，输入 <code>powershell</code>，回车打开</li>
+    <li><strong>Linux：</strong>按 <code>Ctrl + Alt + T</code></li>
+  </ul>
+
+  <div class="tip">
+    <strong>💡 小贴士：</strong>终端里看到 <code>$</code> 或 <code>%</code> 开头的行表示"请在这里输入命令"。复制命令时<strong>不要</strong>复制 <code>$</code> 符号本身。
+  </div>
+
+  <!-- STEP 1 -->
+  <h2 id="step1"><span class="step-num">1</span>安装 Node.js（运行环境）</h2>
+  
+  <p>OpenClaw 需要 Node.js 来运行。就像手机需要操作系统一样，Node.js 是 OpenClaw 的"操作系统"。</p>
+
+  <h3>Mac / Linux</h3>
+  <p>推荐用 <a href="https://github.com/nvm-sh/nvm" target="_blank">nvm</a> 来安装（版本管理更方便）：</p>
+  <pre><code># 安装 nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+# 重新打开终端，然后安装 Node.js
+nvm install 22
+node -v   # 应该显示 v22.x.x</code></pre>
+
+  <h3>Windows</h3>
+  <p>直接去 <a href="https://nodejs.org/zh-cn/" target="_blank">nodejs.org</a> 下载安装包，选择 LTS（长期支持）版本，一路下一步即可。</p>
+
+  <div class="tip">
+    <strong>💡 验证安装：</strong>在终端输入 <code>node -v</code>，看到版本号就说明成功了。
+  </div>
+
+  <!-- STEP 2 -->
+  <h2 id="step2"><span class="step-num">2</span>安装 Claude Code（AI 编程助手）</h2>
+
+  <p>Claude Code 是 Anthropic 推出的命令行 AI 助手，可以帮你写代码、管理文件、回答问题。它也是 OpenClaw 支持的 AI 后端之一。</p>
+
+  <pre><code># 全局安装 Claude Code
+npm install -g @anthropic-ai/claude-code
+
+# 验证安装
+claude --version</code></pre>
+
+  <h3>配置 API Key</h3>
+  <p>你需要一个 Anthropic API Key 来使用 Claude：</p>
+  <ol>
+    <li>访问 <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></li>
+    <li>注册账号 → 进入 API Keys 页面</li>
+    <li>点击 "Create Key"，复制生成的 key</li>
+    <li>在终端中设置：</li>
+  </ol>
+  <pre><code># Mac / Linux — 添加到 shell 配置文件
+echo 'export ANTHROPIC_API_KEY="你的key"' >> ~/.zshrc
+source ~/.zshrc
+
+# Windows PowerShell
+$env:ANTHROPIC_API_KEY = "你的key"</code></pre>
+
+  <div class="warn">
+    <strong>⚠️ 注意：</strong>API Key 是付费的，按使用量计费。建议先充值 $5 试用。保管好你的 key，不要分享给别人。
+  </div>
+
+  <!-- STEP 3 -->
+  <h2 id="step3"><span class="step-num">3</span>安装 OpenClaw（AI 工作流平台）</h2>
+
+  <p>OpenClaw 是一个让 AI 助手"活起来"的平台——它可以连接你的消息应用、定时执行任务、管理记忆，把 AI 变成你的私人助理。</p>
+
+  <pre><code># 安装 OpenClaw
+npm install -g openclaw
+
+# 验证安装
+openclaw --version</code></pre>
+
+  <h3>初始化配置</h3>
+  <pre><code># 初始化（会创建 ~/.openclaw 目录）
+openclaw init
+
+# 启动 gateway 服务（后台常驻）
+openclaw gateway start
+
+# 查看状态
+openclaw status</code></pre>
+
+  <div class="card">
+    <strong>📁 目录结构说明</strong>
+    <pre><code>~/.openclaw/
+├── config.yaml      # 主配置文件
+├── workspace/       # 工作空间
+│   ├── SOUL.md      # AI 人格设定
+│   ├── USER.md      # 你的个人信息
+│   ├── MEMORY.md    # AI 长期记忆
+│   └── memory/      # 每日记忆文件
+└── skills/          # 技能插件</code></pre>
+  </div>
+
+  <h3>配置文件详解</h3>
+  <p>打开 <code>~/.openclaw/config.yaml</code>，这是最核心的配置文件：</p>
+  <pre><code># ~/.openclaw/config.yaml 基础配置示例
+model: deepseek/deepseek-chat    # 默认模型（见第4步）
+
+# API 提供商配置
+providers:
+  deepseek:
+    apiKey: "你的DeepSeek API Key"
+    baseUrl: "https://api.deepseek.com"</code></pre>
+
+  <!-- STEP 4 -->
+  <h2 id="step4"><span class="step-num">4</span>选择 & 配置中文模型</h2>
+
+  <p>作为中文用户，你需要一个中文能力强、价格合理、国内可访问的模型。以下是推荐排序：</p>
+
+  <table class="model-table">
+    <thead>
+      <tr>
+        <th>模型</th>
+        <th>推荐度</th>
+        <th>中文能力</th>
+        <th>价格</th>
+        <th>特点</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>DeepSeek V3</strong></td>
+        <td><span class="badge badge-rec">⭐ 首选</span></td>
+        <td>🟢 极强</td>
+        <td>极低（¥1/百万token）</td>
+        <td>中文最强、价格最低、国内直连</td>
+      </tr>
+      <tr>
+        <td><strong>DeepSeek R1</strong></td>
+        <td><span class="badge badge-rec">⭐ 推荐</span></td>
+        <td>🟢 极强</td>
+        <td>低</td>
+        <td>推理能力强，适合复杂分析</td>
+      </tr>
+      <tr>
+        <td><strong>Qwen (通义千问)</strong></td>
+        <td><span class="badge badge-alt">备选</span></td>
+        <td>🟢 极强</td>
+        <td>低</td>
+        <td>阿里出品，生态完善</td>
+      </tr>
+      <tr>
+        <td><strong>Doubao (豆包)</strong></td>
+        <td><span class="badge badge-alt">备选</span></td>
+        <td>🟢 强</td>
+        <td>低</td>
+        <td>字节出品，对话自然</td>
+      </tr>
+      <tr>
+        <td><strong>Claude Sonnet</strong></td>
+        <td><span class="badge badge-alt">备选</span></td>
+        <td>🟡 良好</td>
+        <td>中等</td>
+        <td>综合能力强，需翻墙</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <strong>🏆 强烈推荐：DeepSeek V3</strong>
+    <p style="margin-top:8px;">对于中国用户来说，DeepSeek 是目前最佳选择：</p>
+    <ul>
+      <li>✅ 中文理解和生成能力顶级</li>
+      <li>✅ 价格极低（可能是最便宜的高质量模型）</li>
+      <li>✅ 国内可以直接访问，无需 VPN</li>
+      <li>✅ API 兼容 OpenAI 格式，配置简单</li>
+    </ul>
+  </div>
+
+  <h3>配置 DeepSeek（推荐）</h3>
+  <ol>
+    <li>访问 <a href="https://platform.deepseek.com/" target="_blank">platform.deepseek.com</a></li>
+    <li>注册账号，进入"API Keys"页面</li>
+    <li>创建一个 API Key</li>
+    <li>充值（最低 ¥10 起，可以用很久）</li>
+    <li>配置 OpenClaw：</li>
+  </ol>
+
+  <pre><code># 方式一：环境变量（推荐）
+# Mac / Linux
+echo 'export DEEPSEEK_API_KEY="你的key"' >> ~/.zshrc
+source ~/.zshrc
+
+# 方式二：直接写入 config.yaml
+# 编辑 ~/.openclaw/config.yaml</code></pre>
+
+  <p>在 <code>config.yaml</code> 中配置模型：</p>
+  <pre><code># ~/.openclaw/config.yaml
+model: deepseek/deepseek-chat
+
+providers:
+  deepseek:
+    apiKey: ${DEEPSEEK_API_KEY}    # 引用环境变量
+    baseUrl: https://api.deepseek.com/v1</code></pre>
+
+  <h3>配置 Qwen（备选）</h3>
+  <pre><code># 通义千问配置
+model: qwen/qwen-max
+
+providers:
+  qwen:
+    apiKey: ${DASHSCOPE_API_KEY}
+    baseUrl: https://dashscope.aliyuncs.com/compatible-mode/v1</code></pre>
+
+  <div class="tip">
+    <strong>💡 如何获取通义千问 API Key：</strong>访问 <a href="https://dashscope.console.aliyun.com/" target="_blank">阿里云灵积平台</a>，注册后在"API-KEY 管理"中创建。
+  </div>
+
+  <!-- STEP 5 -->
+  <h2 id="step5"><span class="step-num">5</span>连接消息平台</h2>
+
+  <p>OpenClaw 最强大的功能之一是可以通过消息应用和你的 AI 助理对话。</p>
+
+  <h3>Telegram（推荐）</h3>
+  <p>Telegram 是 OpenClaw 支持最完善的平台：</p>
+  <ol>
+    <li>在 Telegram 中搜索 <code>@BotFather</code></li>
+    <li>发送 <code>/newbot</code>，按提示创建机器人</li>
+    <li>获取 Bot Token</li>
+    <li>配置到 OpenClaw：</li>
+  </ol>
+  <pre><code># ~/.openclaw/config.yaml
+channels:
+  telegram:
+    token: "你的Bot Token"
+    allowedUsers:
+      - 你的Telegram用户ID    # 数字ID，安全起见限制访问</code></pre>
+
+  <div class="tip">
+    <strong>💡 获取你的 Telegram ID：</strong>在 Telegram 中搜索 <code>@userinfobot</code>，发送任意消息即可获取你的数字 ID。
+  </div>
+
+  <h3>微信（通过 webhook）</h3>
+  <p>微信官方没有开放个人聊天 API，但你可以通过一些第三方工具（如 <a href="https://github.com/zhayujie/chatgpt-on-wechat" target="_blank">chatgpt-on-wechat</a>）桥接到 OpenClaw 的 webhook 接口。这比较高级，建议先从 Telegram 开始。</p>
+
+  <!-- STEP 6 -->
+  <h2 id="step6"><span class="step-num">6</span>日常使用指南</h2>
+
+  <h3>基本命令</h3>
+  <pre><code># 查看状态
+openclaw status
+
+# 启动/停止/重启服务
+openclaw gateway start
+openclaw gateway stop
+openclaw gateway restart
+
+# 查看帮助
+openclaw help</code></pre>
+
+  <h3>个性化你的 AI</h3>
+  <p>编辑工作空间里的文件，让 AI 更了解你：</p>
+
+  <pre><code># 编辑 AI 人格（它的性格和说话方式）
+nano ~/.openclaw/workspace/SOUL.md
+
+# 编辑你的信息（让 AI 了解你）
+nano ~/.openclaw/workspace/USER.md</code></pre>
+
+  <div class="card">
+    <strong>📝 USER.md 示例</strong>
+    <pre><code># USER.md - 关于你
+
+- **名字：** 王帆
+- **角色：** 产品经理
+- **时区：** Asia/Shanghai (GMT+8)
+- **语言偏好：** 中文
+- **备注：** 关注 AI 产品化、用户体验</code></pre>
+  </div>
+
+  <div class="card">
+    <strong>🤖 SOUL.md 示例</strong>
+    <pre><code># SOUL.md - AI 人格
+
+## 核心原则
+- 用中文交流，简洁明了
+- 像一个靠谱的同事，不说废话
+- 主动思考，给出建议而不只是回答问题
+- 用产品经理能理解的方式解释技术概念
+
+## 风格
+- 简洁 > 啰嗦
+- 实用 > 理论
+- 有观点 > 和稀泥</code></pre>
+  </div>
+
+  <h3>常用场景</h3>
+  <div class="card">
+    <strong>📋 产品经理日常工作流</strong>
+    <ul>
+      <li>📧 <strong>邮件管理</strong> — 让 AI 帮你总结、分类、起草回复</li>
+      <li>📊 <strong>数据分析</strong> — 给 AI 数据，让它帮你找 insight</li>
+      <li>📝 <strong>文档撰写</strong> — PRD、周报、竞品分析</li>
+      <li>🔍 <strong>信息搜索</strong> — 行业动态、技术调研</li>
+      <li>⏰ <strong>定时提醒</strong> — 会议提醒、任务跟踪</li>
+      <li>💬 <strong>随时对话</strong> — 通过 Telegram 随时提问</li>
+    </ul>
+  </div>
+
+  <!-- FAQ -->
+  <h2 id="faq"><span class="step-num">?</span>常见问题</h2>
+
+  <h3>Q: 需要翻墙吗？</h3>
+  <p>如果你使用 DeepSeek 或通义千问作为模型，<strong>不需要翻墙</strong>。但 Telegram 在中国需要翻墙使用。如果无法使用 Telegram，可以考虑 webhook 方式接入其他平台。</p>
+
+  <h3>Q: 费用大概多少？</h3>
+  <p>DeepSeek API 极其便宜，日常使用每月可能只需要 ¥5-20。OpenClaw 本身是开源免费的。</p>
+
+  <h3>Q: 没有编程基础能用吗？</h3>
+  <p>完全可以！这份指南就是为非技术人员写的。你只需要在终端里复制粘贴命令。配置好之后，日常使用就是在 Telegram 里聊天。</p>
+
+  <h3>Q: 数据安全吗？</h3>
+  <p>OpenClaw 运行在你自己的电脑上，数据不经过第三方服务器（除了 AI 模型 API）。你的对话记录、记忆文件都存在本地。</p>
+
+  <h3>Q: Mac 和 Windows 都能用吗？</h3>
+  <p>都可以。Mac / Linux 体验最好。Windows 推荐使用 <a href="https://learn.microsoft.com/zh-cn/windows/wsl/install" target="_blank">WSL (Windows Subsystem for Linux)</a> 来获得更好的体验。</p>
+
+  <h3>Q: 安装遇到问题怎么办？</h3>
+  <ul>
+    <li>查看 <a href="https://docs.openclaw.ai" target="_blank">OpenClaw 官方文档</a></li>
+    <li>加入 <a href="https://discord.com/invite/clawd" target="_blank">Discord 社区</a> 提问</li>
+    <li>查看 <a href="https://github.com/openclaw/openclaw/issues" target="_blank">GitHub Issues</a></li>
+  </ul>
+
+  <footer>
+    <p>🐾 由 <a href="https://github.com/openclaw/openclaw">OpenClaw</a> 社区维护 · 有问题？<a href="https://discord.com/invite/clawd">加入 Discord</a></p>
+    <p style="margin-top:8px;">Made with ❤️ for 王帆 and all Chinese PMs</p>
+  </footer>
+
+</div>
+</body>
+</html>
